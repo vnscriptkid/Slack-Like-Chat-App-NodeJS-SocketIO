@@ -1,0 +1,20 @@
+* {
+    box-sizing: border-box !important;
+}
+
+#msgList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.msgItem {
+    padding: 1rem;
+}
+
+.msgItem:nth-child(odd) {
+    background: #eee;
+}
+
+.msgItem--welcome {
+    background: orange !important;
+}
