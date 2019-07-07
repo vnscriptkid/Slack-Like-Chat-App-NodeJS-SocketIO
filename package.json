@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon express.js && live-server public/"
+    "start": "nodemon express.js && live-server public/",
+    "server": "nodemon --exec ts-node ./index.ts",
+    "client": "parcel public/index.html"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/socket.io": "^2.1.2",
     "express": "^4.17.1",
     "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.2"
   }
 }
