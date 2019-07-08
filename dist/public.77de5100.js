@@ -9749,7 +9749,10 @@ function () {
         msgEle.classList.add('msgItem');
         msgEle.innerHTML = "\n        <span>" + msg.author + "<span>\n        <span>" + msg.text + "<span>\n        <span>" + msg.createdAt + "<span>\n      ";
 
-        _this.msgListEle.appendChild(msgEle);
+        _this.msgListEle.appendChild(msgEle); // Scroll to bottom
+
+
+        _this.msgListEle.scrollTo(0, _this.msgListEle.scrollHeight);
       });
     };
 
@@ -9862,7 +9865,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58854" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60131" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

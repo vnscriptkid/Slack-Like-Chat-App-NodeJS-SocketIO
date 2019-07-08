@@ -1,5 +1,4 @@
 import io from 'socket.io-client';
-import { Namespace } from './Namespace';
 import { DomWorker } from './DomWorker';
 import { HOSTNAME } from './constants';
 

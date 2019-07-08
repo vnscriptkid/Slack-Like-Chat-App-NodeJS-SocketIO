@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon express.js && live-server public/",
-    "server": "nodemon --exec ts-node ./index.ts",
-    "client": "parcel public/index.html"
+    "start": "concurrently npm:start:*",
+    "start:server": "nodemon --exec ts-node ./index.ts",
+    "start:client": "parcel public/index.html"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +14,11 @@
   "dependencies": {
     "@types/socket.io": "^2.1.2",
     "express": "^4.17.1",
+    "moment": "^2.24.0",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
+    "concurrently": "^4.1.1",
     "typescript": "^3.5.2"
   }
 }

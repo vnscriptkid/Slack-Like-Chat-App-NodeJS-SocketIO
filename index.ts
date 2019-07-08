@@ -54,6 +54,10 @@ namespaces.forEach(ns => {
       const msgWithTime = { ...msg, createdAt: Date.now() };
       // check current channel of user
       const currentRoom = Object.keys(nsSocket.rooms)[1];
+      // persist msg on server
+      channels
+        .find(channel => channel.name === currentRoom)
+        .msgList.push(msgWithTime);
       // populate new msg for all connected user except the one who sent it
       nsSocket.to(currentRoom).emit('newMsgFromChannel', msgWithTime);
     });

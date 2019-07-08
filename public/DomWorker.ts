@@ -123,6 +123,8 @@ export class DomWorker {
         <span>${msg.createdAt}<span>
       `;
       this.msgListEle.appendChild(msgEle);
+      // Scroll to bottom
+      this.msgListEle.scrollTo(0, this.msgListEle.scrollHeight);
     });
   };
 
