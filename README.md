@@ -1,6 +1,6 @@
 ## Key takeaways:
 
-### Namespaces
+### 1. Namespaces
 
 #### What is namespace:
 
@@ -40,4 +40,4 @@
 * Listen for message over a namespace
   > teacherNs.on(`eventName`, function(data) { ... })
 
-#### Rooms
+### 2. Rooms
