@@ -9681,7 +9681,7 @@ function () {
     this.formEle = formEle;
     this.msgInput = msgInput;
     this.channelNameEle = channelNameEle;
-    this.numOfMemELe = numOfMemELe;
+    this.numOfMemELe = numOfMemELe; // 6. When user send a msg to a channel
 
     this.formSubmitHandler = function (e) {
       e.preventDefault();
@@ -9692,58 +9692,63 @@ function () {
       _this.nsSocket.emit('msgToChannel', {
         author: _this.username,
         text: msg
-      }); // populate msg to msgList
+      }); // populate msg to msgList (client side job, works even network failed)
 
 
       _this.populateMsgList([{
         author: _this.username,
         text: msg,
         createdAt: Date.now()
-      }]); // clear msgInput
+      }], true); // clear msgInput
 
 
       _this.msgInput.value = '';
-    };
+    }; // 3. Channels is populated when user clicks to one namespace
 
-    this.populateChannelList = function (channelList, nsSocket) {
+
+    this.populateChannelList = function (channelList) {
       _this.channelListEle.innerHTML = '';
       channelList.forEach(function (channel) {
         var item = document.createElement('li');
         item.classList.add('channelItem');
         item.innerText = channel.name;
         item.addEventListener('click', function () {
-          return _this.channelClickHandler(channel, nsSocket);
+          return _this.channelClickHandler(channel);
         });
 
         _this.channelListEle.append(item);
       });
-    };
+    }; // 4. When user clicks to one channel
 
-    this.channelClickHandler = function (channel, nsSocket) {
+
+    this.channelClickHandler = function (channel) {
       // subscribe to the channel to get all the messages
-      nsSocket.emit('joinChannel', channel.name); // Run when first join the channel only
+      _this.nsSocket.emit('joinChannel', channel.name); // Run when first join the channel only
 
-      nsSocket.on('channelUpdate', function (data) {
-        var numOfMembers = data.numOfMembers,
-            msgList = data.msgList,
+
+      _this.nsSocket.on('channelUpdate', function (data) {
+        var msgList = data.msgList,
             channelName = data.channelName;
         _this.channelName = channelName;
 
         _this.populateMsgList(msgList);
 
-        _this.populateChannelName();
+        _this.populateChannelName(); // this.updateNumOfMembers(numOfMembers);
 
-        _this.updateNumOfMembers(numOfMembers);
       });
-      nsSocket.on('updateMembers', function (total) {
+
+      _this.nsSocket.on('updateMembers', function (total) {
         return _this.updateNumOfMembers(total);
       });
-      nsSocket.on('newMsgFromChannel', function (msg) {
-        _this.populateMsgList([msg]);
-      });
-    };
 
-    this.populateMsgList = function (msgList) {
+      _this.nsSocket.on('newMsgFromChannel', function (msg) {
+        _this.populateMsgList([msg], true);
+      });
+    }; // 5. Msg List in one channel is populated when (4) user clicks to one channel
+
+
+    this.populateMsgList = function (msgList, update) {
+      if (!update) _this.msgListEle.innerHTML = '';
       msgList.forEach(function (msg) {
         var msgEle = document.createElement('li');
         msgEle.classList.add('msgItem');
@@ -9754,11 +9759,13 @@ function () {
 
         _this.msgListEle.scrollTo(0, _this.msgListEle.scrollHeight);
       });
-    };
+    }; // 5. Channel Name is populated when (4) user clicks to one channel
+
 
     this.populateChannelName = function () {
       _this.channelNameEle.innerText = _this.channelName;
-    };
+    }; // 5. Number of members is populated when (4) a user joins a channel
+
 
     this.updateNumOfMembers = function (total) {
       _this.numOfMemELe.innerText = total.toString() + ' people';
@@ -9768,7 +9775,8 @@ function () {
     // TODO: take username from prompt instead
 
     this.username = 'Thanh';
-  }
+  } // 1. When user first goes to page
+
 
   DomWorker.prototype.populateNsList = function (nsList) {
     var _this = this;
@@ -9786,10 +9794,16 @@ function () {
 
       _this.namespaceListEle.appendChild(ns);
     });
-  };
+  }; // 2. When user clicks to one namespace
+
 
   DomWorker.prototype.nsClickHandler = function (nsItem) {
-    var _this = this;
+    var _this = this; // close current nsSocket if it exists
+
+
+    if (this.nsSocket) {
+      this.nsSocket.close();
+    }
 
     var nsSocket = socket_io_client_1["default"](constants_1.HOSTNAME + "/" + nsItem.name);
     nsSocket.on('connect', function () {
@@ -9798,7 +9812,7 @@ function () {
     });
     nsSocket.on(nsItem.name, function (channelList) {
       // TODO: refactor not to pass around nsSocket
-      return _this.populateChannelList(channelList, nsSocket);
+      return _this.populateChannelList(channelList);
     });
   };
 
@@ -9865,7 +9879,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60131" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65024" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

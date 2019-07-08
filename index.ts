@@ -28,23 +28,21 @@ namespaces.forEach(ns => {
     nsSocket.on(
       'joinChannel',
       (channelName: string): void => {
-        console.log(`${nsSocket.id} wants to join ${channelName}`);
+        const joinedChannel = Object.keys(nsSocket.rooms)[1];
+        if (joinedChannel) {
+          nsSocket.leave(joinedChannel);
+          updateMembers(ns.name, joinedChannel);
+        }
+
         nsSocket.join(channelName, err => {
           if (err) throw err;
-          socketioServer
-            .of(ns.name)
-            .in(channelName)
-            .clients((err, clients) => {
-              if (err) throw err;
-              // initial data for the newcomer
-              nsSocket.emit('channelUpdate', {
-                numOfMembers: clients.length,
-                msgList: channels.find(c => c.name === channelName).msgList,
-                channelName
-              });
-              // notify others with the newcomer
-              nsSocket.to(channelName).emit('updateMembers', clients.length);
-            });
+          // initial data for the newcomer
+          nsSocket.emit('channelUpdate', {
+            msgList: channels.find(c => c.name === channelName).msgList,
+            channelName
+          });
+          // update the number of members for all in room (including the new one)
+          updateMembers(ns.name, channelName);
         });
       }
     );
@@ -63,3 +61,18 @@ namespaces.forEach(ns => {
     });
   });
 });
+
+function updateMembers(ns: string, channel: string) {
+  console.log('update members', ns, channel);
+  socketioServer
+    .of(ns)
+    .in(channel)
+    .clients((err, clients: []) => {
+      if (err) throw err;
+      console.log('update members: ', clients.length);
+      socketioServer
+        .of(ns)
+        .in(channel)
+        .emit('updateMembers', clients.length);
+    });
+}
