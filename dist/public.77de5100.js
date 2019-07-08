@@ -14444,8 +14444,7 @@ var DomWorker_1 = require("./DomWorker");
 var constants_1 = require("./constants");
 
 var username = prompt('Please fill in your username: ');
-window.username = username; // console.log('username: ', username);
-
+window.username = username;
 var domWorker = new DomWorker_1.DomWorker(document.getElementById('namespaceList'), document.getElementById('channelList'), document.getElementById('msgList'), document.getElementById('msgForm'), document.getElementById('msgInput'), document.getElementById('channelName'), document.getElementById('numOfMembers')); // connect to global ns /
 
 var socket = socket_io_client_1["default"](constants_1.HOSTNAME + "?username=" + username); // connected to global ns /

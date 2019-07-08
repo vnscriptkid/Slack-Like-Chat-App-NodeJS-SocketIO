@@ -4,7 +4,6 @@ import { HOSTNAME } from './constants';
 
 const username: string = prompt('Please fill in your username: ');
 (window as any).username = username;
-// console.log('username: ', username);
 
 const domWorker = new DomWorker(
   document.getElementById('namespaceList') as HTMLUListElement,
