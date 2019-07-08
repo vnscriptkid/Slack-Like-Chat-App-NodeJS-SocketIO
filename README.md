@@ -34,7 +34,7 @@
 * Listen for connection to one namespace:
   > socketioServer.of(`teachers`).on('connect', (teacherNs) => { ... })
 
-#### Same in both client and server:
+###### Same in both client and server:
 
 * Talk over a namespace
   > teacherNs.emit(`eventName`, data)
