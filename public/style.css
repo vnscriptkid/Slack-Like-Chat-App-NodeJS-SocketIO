@@ -9,6 +9,7 @@
 
 .msgItem {
   padding: 1rem;
+  display: flex;
 }
 
 .msgItem:nth-child(odd) {

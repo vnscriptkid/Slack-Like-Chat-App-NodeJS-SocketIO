@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import { HOSTNAME } from './constants';
+import moment from 'moment';
 
 export class DomWorker {
   private nsSocket: SocketIOClient.Socket;
@@ -126,9 +127,11 @@ export class DomWorker {
       const msgEle = document.createElement('li');
       msgEle.classList.add('msgItem');
       msgEle.innerHTML = `
-        <span>${msg.author}<span>
-        <span>${msg.text}<span>
-        <span>${msg.createdAt}<span>
+        <span style="font-weight: bold; margin-right: 1rem">${msg.author}</span>
+        <span>${msg.text}</span>
+        <span style="margin-left: auto">${moment(
+          msg.createdAt
+        ).fromNow()}</span>
       `;
       this.msgListEle.appendChild(msgEle);
       // Scroll to bottom
