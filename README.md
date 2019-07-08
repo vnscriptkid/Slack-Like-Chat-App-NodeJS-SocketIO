@@ -1,6 +1,6 @@
-## Key takeaways:
+# Key takeaways:
 
-### 1. Namespaces
+## 1. Namespaces
 
 #### What is namespace:
 
@@ -40,4 +40,25 @@
 * Listen for message over a namespace
   > teacherNs.on(`eventName`, function(data) { ... })
 
-### 2. Rooms
+## 2. Rooms
+
+#### What is room:
+* Group clients in one specific namespace
+* A server concept, client knows nothing about room
+
+#### Operations with room (server side only):
+
+###### Join a client to a room
+> teacherSocket.join(`channelName`, function(err) { ... })
+
+###### Leave a client out of a room
+> teacherSocket.leave(`channelName`)
+
+###### Send a message to all clients except for the one who initiates it:
+> teacherSocket.to(`room`).emit(`eventName`, data)
+
+###### See all the clients inside a room (possibly count the number of clients):
+> socketioServer.of(`namespace`).in(`room`).clients(function(err, clients) { ... })
+
+###### Send a message to all clients inside a room
+> socketioServer.of(`namespace`).in(`room`).emit(`eventName`, data)
