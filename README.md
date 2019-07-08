@@ -12,6 +12,7 @@
 * level 2:
 
 > teacherNs = io('http://example.com/teachers')
+
 > studentNs = io(http://example.com/students)
 
 #### Why namespaces?
