@@ -9690,7 +9690,7 @@ function () {
       if (!_this.nsSocket || !_this.channelName || !_this.username) return; // send msg to the channel over the namespace
 
       _this.nsSocket.emit('msgToChannel', {
-        author: _this.username,
+        // author: this.username,
         text: msg
       }); // populate msg to msgList (client side job, works even network failed)
 
@@ -9771,10 +9771,8 @@ function () {
       _this.numOfMemELe.innerText = total.toString() + ' people';
     };
 
-    this.formEle.addEventListener('submit', this.formSubmitHandler); // this.username = (window as any).username;
-    // TODO: take username from prompt instead
-
-    this.username = 'Thanh';
+    this.formEle.addEventListener('submit', this.formSubmitHandler);
+    this.username = window.username; // TODO: take username from prompt instead
   } // 1. When user first goes to page
 
 
@@ -9835,14 +9833,14 @@ var socket_io_client_1 = __importDefault(require("socket.io-client"));
 
 var DomWorker_1 = require("./DomWorker");
 
-var constants_1 = require("./constants"); // const username: string = prompt('Please fill in your username: ');
-// (window as any).username = username;
-// console.log('username: ', username);
+var constants_1 = require("./constants");
 
+var username = prompt('Please fill in your username: ');
+window.username = username; // console.log('username: ', username);
 
 var domWorker = new DomWorker_1.DomWorker(document.getElementById('namespaceList'), document.getElementById('channelList'), document.getElementById('msgList'), document.getElementById('msgForm'), document.getElementById('msgInput'), document.getElementById('channelName'), document.getElementById('numOfMembers')); // connect to global ns /
 
-var socket = socket_io_client_1["default"](constants_1.HOSTNAME + "/"); // connected to global ns /
+var socket = socket_io_client_1["default"](constants_1.HOSTNAME + "?username=" + username); // connected to global ns /
 
 socket.on('connect', function () {
   console.log(socket.id);

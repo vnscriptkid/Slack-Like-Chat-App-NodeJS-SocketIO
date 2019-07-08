@@ -16,9 +16,8 @@ export class DomWorker {
     private numOfMemELe: HTMLElement
   ) {
     this.formEle.addEventListener('submit', this.formSubmitHandler);
-    // this.username = (window as any).username;
+    this.username = (window as any).username;
     // TODO: take username from prompt instead
-    this.username = 'Thanh';
   }
 
   // 6. When user send a msg to a channel
@@ -29,7 +28,7 @@ export class DomWorker {
     if (!this.nsSocket || !this.channelName || !this.username) return;
     // send msg to the channel over the namespace
     this.nsSocket.emit('msgToChannel', {
-      author: this.username,
+      // author: this.username,
       text: msg
     });
     // populate msg to msgList (client side job, works even network failed)

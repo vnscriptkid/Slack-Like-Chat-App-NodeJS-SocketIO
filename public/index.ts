@@ -2,8 +2,8 @@ import io from 'socket.io-client';
 import { DomWorker } from './DomWorker';
 import { HOSTNAME } from './constants';
 
-// const username: string = prompt('Please fill in your username: ');
-// (window as any).username = username;
+const username: string = prompt('Please fill in your username: ');
+(window as any).username = username;
 // console.log('username: ', username);
 
 const domWorker = new DomWorker(
@@ -17,7 +17,7 @@ const domWorker = new DomWorker(
 );
 
 // connect to global ns /
-const socket = io(`${HOSTNAME}/`);
+const socket = io(`${HOSTNAME}?username=${username}`);
 
 // connected to global ns /
 socket.on('connect', () => {
